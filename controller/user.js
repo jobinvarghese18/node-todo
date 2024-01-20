@@ -16,12 +16,8 @@ const signUp = async (req, res) => {
         return;
       }
 
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const result = await User.create({
-        name,
-        email,
-        password: hashedPassword,
-      });
+      const user = new User({ name, email, password });
+      const result = await user.save();
       res.status(201).json({ data: result });
     } else {
       console.log("err");

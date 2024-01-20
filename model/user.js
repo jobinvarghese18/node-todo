@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const Schema = mongoose.Schema;
+
+const setPassword = (value) => {
+  return bcrypt.hashSync(value, 10);
+};
 
 const userSchema = Schema({
   name: {
@@ -13,6 +18,7 @@ const userSchema = Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
+    set: setPassword,
   },
 });
 
