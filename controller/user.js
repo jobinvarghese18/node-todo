@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../model/user");
 const { validationResult } = require("express-validator");
 
@@ -36,6 +37,19 @@ const signIn = async (req, res) => {
     const error = validationResult(req);
     if (error.isEmpty()) {
       const { email, password } = req.body;
+
+      const user = await User.findOne({ email });
+      if (!user) {
+        res.status(404).json({ error: { message: "User nof found" } });
+      } else {
+        const match = await bcrypt.compare(password, user.password);
+        if (match) {
+          console.log(process.env.JWT_SECRETE, "process.env.JWT_SECRETE");
+          const token = await jwt.sign({ user }, process.env.JWT_SECRETE);
+          res.status(200).json({ data: { user, access_token: token } });
+        } else
+          res.status(200).json({ message: { error: "Incorrect credentials" } });
+      }
     } else {
       res.status(422).json({ error: error.array() });
     }
