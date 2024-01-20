@@ -12,4 +12,9 @@ const loginValidator = [
   body("password", "Password required").not().isEmpty(),
   //   body("password", "Min length is 3").is,
 ];
-module.exports = { registerValidator, loginValidator };
+
+const todoValidator = [
+  body("name", "Name is required").not().isEmpty(),
+  body("description", "Description is required").not().isEmpty(),
+];
+module.exports = { registerValidator, loginValidator, todoValidator };

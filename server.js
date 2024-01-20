@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/user");
+const todoRoutes = require("./routes/todo");
 const connectDB = require("./config/DBConfig");
 dotenv.config();
 const app = express();
@@ -16,3 +17,4 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/todo", todoRoutes);
